@@ -18,4 +18,4 @@ worker|n|RHEL 7.6|192.168.10.31~|2/8/120G|ansible<br>openshift-clients<br>jq|ans
 
 ### 2. 서버 구성도
 [클릭하여 이미지 확인 하세요](https://www.processon.com/view/link/5ee84782f346fb1ae56574a6)
-<iframe src="https://www.processon.com/embed/5ee847811e085326372b8055" id="the_iframe" onload="calcHeight();" name="WrittenPublic" title="게시판뷰" frameborder="0" scrolling="no" style="overflow-x:hidden; overflow:auto; width:100%; min-height:500px;"></iframe>
+![enter image description here](http://assets.processon.com/chart_image/5ee847811e085326372b8058.png)
