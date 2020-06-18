@@ -1050,6 +1050,62 @@ coreos.inst.ignition_url=ftp://192.168.10.229/pub/master.ign
 ip=192.168.10.31::192.168.10.1:255.255.255.0:worker01.ocp44.fu.com:ens192:none nameserver=192.168.10.220
 ```
 
+```
+[core@bastion ~]$ oc get csr
+NAME        AGE    REQUESTOR                                                                   CONDITION
+csr-682gd   47m    system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Approved,Issued
+csr-8txnw   6m1s   system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Pending
+csr-c6nbn   47m    system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Approved,Issued
+csr-nn9wb   47m    system:node:master03.ocp44.fu.com                                           Approved,Issued
+csr-pqssb   47m    system:node:master02.ocp44.fu.com                                           Approved,Issued
+csr-rnnnm   47m    system:node:master01.ocp44.fu.com                                           Approved,Issued
+csr-whvvp   47m    system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Approved,Issued
+csr-xtmfr   21m    system:serviceaccount:openshift-machine-config-operator:node-bootstrapper   Pending
+
+
+oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
+
+[core@bastion ~]$ oc get nodes
+NAME                    STATUS   ROLES    AGE   VERSION
+master01.ocp44.fu.com   Ready    master   49m   v1.17.1
+master02.ocp44.fu.com   Ready    master   49m   v1.17.1
+master03.ocp44.fu.com   Ready    master   49m   v1.17.1
+worker01.ocp44.fu.com   Ready    worker   43s   v1.17.1
+
+[core@bastion ~]$ oc get co
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
+authentication                             4.4.5     True        False         False      3m28s
+cloud-credential                           4.4.5     True        False         False      97m
+cluster-autoscaler                         4.4.5     True        False         False      46m
+console                                    4.4.5     True        False         False      5m11s
+csi-snapshot-controller                    4.4.5     True        False         False      9m4s
+dns                                        4.4.5     True        False         False      52m
+etcd                                       4.4.5     True        False         False      51m
+image-registry                             4.4.5     True        False         False      47m
+ingress                                    4.4.5     True        False         False      9m6s
+insights                                   4.4.5     True        False         False      47m
+kube-apiserver                             4.4.5     True        False         False      50m
+kube-controller-manager                    4.4.5     True        False         False      50m
+kube-scheduler                             4.4.5     True        False         False      50m
+kube-storage-version-migrator              4.4.5     True        False         False      9m23s
+machine-api                                4.4.5     True        False         False      52m
+machine-config                             4.4.5     True        False         False      51m
+marketplace                                4.4.5     True        False         False      47m
+monitoring                                 4.4.5     True        False         False      8m5s
+network                                    4.4.5     True        False         False      53m
+node-tuning                                4.4.5     True        False         False      52m
+openshift-apiserver                        4.4.5     True        False         False      48m
+openshift-controller-manager               4.4.5     True        False         False      47m
+openshift-samples                          4.4.5     True        False         False      43m
+operator-lifecycle-manager                 4.4.5     True        False         False      52m
+operator-lifecycle-manager-catalog         4.4.5     True        False         False      51m
+operator-lifecycle-manager-packageserver   4.4.5     True        False         False      47m
+service-ca                                 4.4.5     True        False         False      52m
+service-catalog-apiserver                  4.4.5     True        False         False      52m
+service-catalog-controller-manager         4.4.5     True        False         False      52m
+storage                                    4.4.5     True        False         False      47m
+
+```
 #### 3.2.5 노드 추가 - RHEL
 - 시스템 requirements
 **provisioning server**
@@ -1066,8 +1122,7 @@ ip=192.168.10.31::192.168.10.1:255.255.255.0:worker01.ocp44.fu.com:ens192:none n
      - 1 vCPU.
      - Minimum 8 GB RAM.
      - 20GB hard disk
-
-#### 2. 사전 준비
+ 2. 사전 준비
 
 **provisioning server**
 
@@ -1117,7 +1172,7 @@ ip=192.168.10.31::192.168.10.1:255.255.255.0:worker01.ocp44.fu.com:ens192:none n
 
 
    
-#### 노드 추가 잡억 실행
+노드 추가 잡억 실행
 
 
 **provisioning server 에서 실행**
@@ -1146,12 +1201,12 @@ ip=192.168.10.31::192.168.10.1:255.255.255.0:worker01.ocp44.fu.com:ens192:none n
     
     #ansible playbook 실행
     ansible-playbook -i /root/inventory/hosts playbooks/scaleup.yml
+    
 
 #### 3.2.6 update operator hub catalog 
 Apply the manifests
 
 ```
-cd /etc/docker/certs.d
 oc apply -f ./redhat-operators-manifests
 ```
 
@@ -1159,6 +1214,7 @@ CatalogSource 정의
 
 ```
 vi  catalogsource.yaml
+apiVersion:  operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
   name: my-operator-catalog
@@ -1198,3 +1254,7 @@ scp -r registry.ocp44.fu.com:/xxxxx/registry.ocp44.fu.com\:5000/{REGISTRY_HTTP_T
 
 podman login registry.ocp44.fu.com:5000 -u admin
 ```
+
+## 4 OCP 설치끝 
+![login access.jpg](https://i.loli.net/2020/06/18/Pz51yxgbD3LUmWn.jpg)
+
