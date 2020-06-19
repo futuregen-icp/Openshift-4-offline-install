@@ -1,13 +1,11 @@
-
+[tco]
 # Openshift4.4-offline install
 
 
 ## 1설치 환경
 
 ### 1.1 서버 구성도
-[클릭하여 이미지 확인 하세요](https://www.processon.com/view/link/5ee84782f346fb1ae56574a6)
-![enter image description here](http://assets.processon.com/chart_image/5ee847811e085326372b8058.png)
-
+![OCP 환경 구성도.png](https://i.loli.net/2020/06/19/EJr2AbLuBy4oUlF.png)
 ### 1.2 서버 구성 사항
 |role|수량|OS|IP|core / memory / disk|필수패키지|비고|
 |:--:|:--:|:--:|:--:|:--:|:--:|:--:|
@@ -90,15 +88,16 @@ name=rhel-7-server-ansible-2.8-rpms
 baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ansible-2.8-rpms
 enabled=1
 gpgcheck=0
+[rhel-7-server-ansible-2.9-rpms]
+name=rhel-7-server-ansible-2.9-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ansible-2.9-rpms
+enabled=1
+gpgcheck=0
 [rhel-7-server-ose-4.4-rpms]
 name=rhel-7-server-ose-4.4-rpms
 baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ose-4.4-rpms
 enabled=1
 gpgcheck=0
-
-yum clean all
-rpm --rebuilddb
-yum update
 ```
 
 #### 2.1.2  DNS 서버 설치
@@ -240,7 +239,7 @@ Address:        192.168.10.220#53
 Name:   api.ocp44.fu.com
 Address: 192.168.10.220
 ```
-#### 2.1.2  HAProxy 서버 설치
+#### 2.1.3  HAProxy 서버 설치
  - L/B 설치
 ```
 #yum install haproxy.x86_64 -y
@@ -418,10 +417,10 @@ curl http://api.ocp44.fu.com:6443
 openshift-api-server ocp44-openshift-api-server/<NOSRV>
 ```
 
-#### 2.1.3  LDAP 서버 설치
+#### 2.1.4  LDAP 서버 설치
 - 나중에 추가
 
-#### 2.1.4   IP Masquerade 설정
+#### 2.1.5   IP Masquerade 설정
 - ip forword를 위한 kernel 설정
 ```
 sysctl -w net.ipv4.ip_forward=1
@@ -449,7 +448,7 @@ firewall-cmd --reload
 
 nmcli connection modify ens192 ipv4.route-metric 100
 ```
-#### 2.1.5   방화벽 설정
+#### 2.1.6   방화벽 설정
 - external zone firewall
 ```
 firewall-cmd --permanent --zone=external --add-port=80/tcp
@@ -477,7 +476,7 @@ firewall-cmd --reload
 ```
 
 ### 2.2 Registry서버 설치
-#### 2.1.1  OS 설치
+#### 2.2.1  OS 설치
  - IP 정보 
  
 |망| IP address |
@@ -633,7 +632,7 @@ firewall-cmd --permanent --zone=internal --add-port=5000/tcp
 firewall-cmd --reload
 ```
 ### 2.3 Storage 서버 설치
-#### 2.3.2 NFS 서버 구성
+#### 2.3.1 NFS 서버 구성
 -나중에 추가
 
 ### 2.4 Bastion 서버 설치
@@ -664,6 +663,11 @@ gpgcheck=0
 [rhel-7-server-ansible-2.8-rpms]
 name=rhel-7-server-ansible-2.8-rpms
 baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ansible-2.8-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ansible-2.9-rpms]
+name=rhel-7-server-ansible-2.9-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ansible-2.9-rpms
 enabled=1
 gpgcheck=0
 [rhel-7-server-ose-4.4-rpms]
@@ -961,7 +965,7 @@ ssh bootstrap.ocp44.fu.com
 openshift-install --dir=/opt/ocp44/install-`date +%Y%m%d$h` wait-for bootstrap-complete -log-level=debug
 ```
 
-#### 3.2.2 master VM 준비
+#### 3.2.4 master VM 준비
 - master01 서버 설치
  - IP 정보 
  
@@ -1003,7 +1007,7 @@ ip=192.168.10.21::192.168.10.1:255.255.255.0:master01.ocp44.fu.com:ens192:none n
 | 내부IP | 192.168.10.23 |
 -절차는 master01과 동일함 
 
-#### 3.2.3 클러스터 상태 확인
+#### 3.2.5 클러스터 상태 확인
 - 마스터노드 배포 완료
 ```
 [core@bastion ~]$ openshift-install --dir=/opt/ocp44/install-`date +%Y%m%d$h` wait-for bootstrap-complete --log-level=info
@@ -1029,7 +1033,7 @@ master03.ocp44.fu.com   Ready    master   9m31s   v1.17.1
 #마스트 노드 배포 끝
 ```
 
-#### 3.2.4 노드 추가 - CoreOS
+#### 3.2.6 노드 추가 - CoreOS
 - worker01 서버 설치
  - IP 정보 
  
@@ -1106,9 +1110,18 @@ service-catalog-controller-manager         4.4.5     True        False         F
 storage                                    4.4.5     True        False         False      47m
 
 ```
-#### 3.2.5 노드 추가 - RHEL
-- 시스템 requirements
-**provisioning server**
+#### 3.2.7 노드 추가 - RHEL
+- worker02 서버 설치
+ - IP 정보 
+ 
+|망| IP address |
+|--|:--:|
+| 외부IP | X |
+| 내부IP | 192.168.10.32 |
+
+- **시스템 requirements**
+
+**provisioning server (여기서는 bastion 사용)**
 
      - ansible 실행 가능한 서버
      - kubeconfig 파일
@@ -1124,86 +1137,123 @@ storage                                    4.4.5     True        False         F
      - 20GB hard disk
  2. 사전 준비
 
-**provisioning server**
-
-    subscription-manager register --username=qingsong1989 --password=<password>
-    subscription-manager refresh
-    subscription-manager list --available --matches '*OpenShift*'
-    subscription-manager attach --pool=<pool_id>
-    
-    # repositories 등록
-    subscription-manager repos \
-    --enable="rhel-7-server-rpms" \
-    --enable="rhel-7-server-extras-rpms" \
-    --enable="rhel-7-server-ansible-2.8-rpms" \
-    --enable="rhel-7-server-ose-4.4-rpms"
-    
-    #ansible oc jq 설치
-    yum install openshift-ansible openshift-clients jq
-
 **worker node**
 
-    subscription-manager register --username=qingsong1989 --password=<password>
-    subscription-manager refresh
-    subscription-manager list --available --matches '*OpenShift*'
-    subscription-manager attach --pool=<pool_id>
-    
-    # clear repositories
-    subscription-manager repos --disable="*"
-    
-    # repositories 등록
-    subscription-manager repos \
-    --enable="rhel-7-server-rpms" \
-    --enable="rhel-7-server-extras-rpms" \
-    --enable="rhel-7-server-ose-4.4-rpms"
-    
-    # repositories 확인
-    [root@worker02 ~]# yum repolist
-    -----------------------------------
-    Loaded plugins: product-id, search-disabled-repos, subscription-manager
-    repo id                                        repo name                                                       status
-    rhel-7-server-extras-rpms/x86_64               Red Hat Enterprise Linux 7 Server - Extras (RPMs)                1,285
-    rhel-7-server-ose-4.4-rpms/x86_64              Red Hat OpenShift Container Platform 4.4 (RPMs)                    118
-    rhel-7-server-rpms/7Server/x86_64              Red Hat Enterprise Linux 7 Server (RPMs)                        29,118
-    -----------------------------------
-    
-    #방화벽 오픈 
-    systemctl disable --now firewalld.service
+- repo 설정
 
+```
+cat /etc/yum.repos.d/ocp4-4.repo
+[rhel-7-server-rpms]
+name=rhel-7-server-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-extras-rpms]
+name=rhel-7-server-extras-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-extras-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ansible-2.8-rpms]
+name=rhel-7-server-ansible-2.8-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ansible-2.8-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ansible-2.9-rpms]
+name=rhel-7-server-ansible-2.9-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ansible-2.9-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ose-4.4-rpms]
+name=rhel-7-server-ose-4.4-rpms
+baseurl=ftp://192.168.10.222/pub/repos/rhel-7-server-ose-4.4-rpms
+enabled=1
+gpgcheck=0
+```
+-  방화벽 오픈 
+```
+systemctl disable --now firewalld.service
+```
 
-   
-노드 추가 잡억 실행
+ **bastion 에서 실행**
 
+- inventory 파일 생성
+```
+vi /home/core/inventory/hosts/inventory.yaml 
+-------------------------- 
+[all:vars] 
+ansible_user=root 
+#ansible_become=True 
+openshift_kubeconfig_path="/opt/ocp44/install-20200618/auth/kubeconfig" 
 
-**provisioning server 에서 실행**
+[workers] 
+worker01.ocp44.fu.com 
 
-    #kubeconfig 파일 복사
-    scp bastion:/opt/ocp4.4/install-`date +%Y%m%d`/auth/kubeconfig /root/.kube/
-    
-    #inventory 파일 생성
-    vi /root/inventory/hosts/inventory.yaml
-    --------------------------
-    [all:vars]
-    ansible_user=root
-    #ansible_become=True
-    
-    openshift_kubeconfig_path="~/.kube/kubeconfig"
-    
-    [workers]
-    worker01.ocp44.fu.com
-    
-    [new_workers]
-    worker02.ocp44.fu.com
-    #mycluster-rhel7-3.example.com (다중 노드 추가 시)
-    -------------------------
-    #ssh key 복사
-    ssh-copy-id root@worker02.ocp44.fu.com
-    
-    #ansible playbook 실행
-    ansible-playbook -i /root/inventory/hosts playbooks/scaleup.yml
-    
+[new_workers] 
+worker02.ocp44.fu.com
+#mycluster-rhel7-3.example.com (다중 노드 추가 시)
+```
+- ssh key 복사
+```
+ssh-copy-id root@worker02.ocp44.fu.com
+```
+- ansible playbook 실행
+```
+cd /usr/share/ansible/openshift-ansible
+ansible-playbook -K -i /home/core/inventory/hosts/inventory.yaml playbooks/scaleup.yml
+```    
+- 노드 확인 
+```
+[core@bastion openshift-ansible]$ oc get nodes
+NAME                    STATUS   ROLES    AGE   VERSION
+master01.ocp44.fu.com   Ready    master   17h   v1.17.1
+master02.ocp44.fu.com   Ready    master   17h   v1.17.1
+master03.ocp44.fu.com   Ready    master   17h   v1.17.1
+worker01.ocp44.fu.com   Ready    worker   16h   v1.17.1
+worker02.ocp44.fu.com   Ready    worker   53m   v1.17.1
+[core@bastion openshift-ansible]$ oc get co
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
+authentication                             4.4.5     True        False         False      16h
+cloud-credential                           4.4.5     True        False         False      18h
+cluster-autoscaler                         4.4.5     True        False         False      17h
+console                                    4.4.5     True        False         False      16h
+csi-snapshot-controller                    4.4.5     True        False         False      16h
+dns                                        4.4.5     True        False         False      17h
+etcd                                       4.4.5     True        False         False      17h
+image-registry                             4.4.5     True        False         False      17h
+ingress                                    4.4.5     True        False         False      16h
+insights                                   4.4.5     True        False         False      17h
+kube-apiserver                             4.4.5     True        False         False      17h
+kube-controller-manager                    4.4.5     True        False         False      17h
+kube-scheduler                             4.4.5     True        False         False      17h
+kube-storage-version-migrator              4.4.5     True        False         False      16h
+machine-api                                4.4.5     True        False         False      17h
+machine-config                             4.4.5     True        False         False      16h
+marketplace                                4.4.5     True        False         False      16h
+monitoring                                 4.4.5     True        False         False      16h
+network                                    4.4.5     True        False         False      17h
+node-tuning                                4.4.5     True        False         False      17h
+openshift-apiserver                        4.4.5     True        False         False      17h
+openshift-controller-manager               4.4.5     True        False         False      17h
+openshift-samples                          4.4.5     True        False         False      17h
+operator-lifecycle-manager                 4.4.5     True        False         False      17h
+operator-lifecycle-manager-catalog         4.4.5     True        False         False      17h
+operator-lifecycle-manager-packageserver   4.4.5     True        False         False      152m
+service-ca                                 4.4.5     True        False         False      17h
+service-catalog-apiserver                  4.4.5     True        False         False      17h
+service-catalog-controller-manager         4.4.5     True        False         False      17h
+storage                                    4.4.5     True        False         False      17h
 
-#### 3.2.6 update operator hub catalog 
+```
+
+- 이슈 정리 
+```
+TASK [openshift_node : Get cluster nodes]
+fatal: [localhost]: FAILED! => {"msg": "The conditional check 'oc_get.stdout != ''' failed. The error was: error while evaluating conditional (oc_get.stdout != ''): 'dict object' has no attribute 'stdout'"}
+
+체크 포인트: 작업노드에서 계정 core가 sudo 권한 있어야 한다.
+```
+
+#### 3.2.8 update operator hub catalog 
 Apply the manifests
 
 ```
