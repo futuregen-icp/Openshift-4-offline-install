@@ -1,3 +1,5 @@
+## Issue
+```
 TASK [openshift_node : Pull MCD image] *****************************************************************************************************************
 FAILED - RETRYING: Pull MCD image (12 retries left).
 FAILED - RETRYING: Pull MCD image (12 retries left).
@@ -49,3 +51,6 @@ infra1.oss2.fu.igotit.co.kr : ok=36   changed=27   unreachable=0    failed=1    
 infra2.oss2.fu.igotit.co.kr : ok=36   changed=27   unreachable=0    failed=1    skipped=5    rescued=1    ignored=0   
 infra3.oss2.fu.igotit.co.kr : ok=36   changed=27   unreachable=0    failed=1    skipped=5    rescued=1    ignored=0   
 localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0  
+```
+
+## Solution
