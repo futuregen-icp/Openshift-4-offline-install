@@ -1,3 +1,5 @@
+## Issue
+```
 [root@lab1-bastion ~]# subscription-manager repos \
 >     --enable="rhel-7-server-rpms" \
 >     --enable="rhel-7-fast-datapath-rpms" \
@@ -63,3 +65,14 @@ Error: Package: openshift-ansible-4.6.0-202102031649.p0.git.0.bf90f86.el7.noarch
                ansible = 2.4.2.0-2.el7
  You could try using --skip-broken to work around the problem
  You could try running: rpm -Va --nofiles --nodigest
+ ```
+
+## Solution
+```
++ Configure for the bastion subscription
+subscription-manager repos\
+    --enable="rhel-7-server-rpms"\
+    --enable="rhel-7-server-extras-rpms"\
+    --enable="rhel-7-server-ansible-2.9-rpms"\
+    --enable="rhel-7-server-ose-4.6-rpms"
+```
