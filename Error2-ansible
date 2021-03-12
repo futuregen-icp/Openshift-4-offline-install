@@ -54,3 +54,5 @@ localhost                  : ok=1    changed=1    unreachable=0    failed=0    s
 ```
 
 ## Solution
+Cause is stoped as registry container .
+i actioned start container registry.
