@@ -1,0 +1,39 @@
+[root@lab1-bastion registry]# oc describe is openjdk -n openshift
+Name:			openjdk
+Namespace:		openshift
+Created:		2 hours ago
+Labels:			samples.operator.openshift.io/managed=true
+			xpaas=1.4.17
+Annotations:		openshift.io/display-name=Red Hat OpenJDK
+			openshift.io/image.dockerRepositoryCheck=2021-06-01T02:40:34Z
+			openshift.io/provider-display-name=Red Hat, Inc.
+			samples.operator.openshift.io/version=4.6.15
+			version=1.4.17
+Image Repository:	image-registry.openshift-image-registry.svc:5000/openshift/openjdk
+Image Lookup:		local=false
+Unique Images:		0
+Tags:			2
+
+latest
+  tagged from registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8
+    prefer registry pullthrough when referencing this tag
+
+  Build and run Java applications using Maven and OpenJDK 8.
+  Tags: builder, java, openjdk, hidden
+  Supports: java:8, java
+  Example Repo: https://github.com/jboss-openshift/openshift-quickstarts
+
+  ! error: Import failed (InternalError): Internal error occurred: registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8: Get "https://registry.oss2.fu.igotit.co.kr:5000/v2/": x509: certificate signed by unknown authority
+      2 hours ago
+
+8
+  tagged from registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8
+    prefer registry pullthrough when referencing this tag
+
+  Build and run Java applications using Maven and OpenJDK 8.
+  Tags: builder, java, openjdk, hidden
+  Supports: java:8, java
+  Example Repo: https://github.com/jboss-openshift/openshift-quickstarts
+
+  ! error: Import failed (InternalError): Internal error occurred: registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8: Get "https://registry.oss2.fu.igotit.co.kr:5000/v2/": x509: certificate signed by unknown authority
+      2 hours ago
