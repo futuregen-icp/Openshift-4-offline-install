@@ -26,7 +26,6 @@ latest
   ! error: Import failed (InternalError): Internal error occurred: registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8: Get "https://registry.oss2.fu.igotit.co.kr:5000/v2/": x509: certificate signed by unknown authority
       2 hours ago
 
-8
   tagged from registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8
     prefer registry pullthrough when referencing this tag
 
@@ -37,3 +36,8 @@ latest
 
   ! error: Import failed (InternalError): Internal error occurred: registry.oss2.fu.igotit.co.kr:5000/openjdk/openjdk:8: Get "https://registry.oss2.fu.igotit.co.kr:5000/v2/": x509: certificate signed by unknown authority
       2 hours ago
+
+
+## Resolution
+: Setting up additional trusted certificate authorities for builds
+https://access.redhat.com/solutions/1519813
