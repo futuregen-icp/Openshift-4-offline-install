@@ -1,1 +1,5 @@
+## Issue log
 error: build error: Failed to push image: error copying layers and metadata from "containers-storage:[overlay@/var/lib/containers/storage+/var/run/containers/storage:overlay.imagestore=/var/lib/shared]image-registry.openshift-image-registry.svc:5000/lab2-test1/openjdk-app:latest" to "docker://image-registry.openshift-image-registry.svc:5000/lab2-test1/openjdk-app:latest": Error writing blob: Error initiating layer upload to /v2/lab2-test1/openjdk-app/blobs/uploads/ in image-registry.openshift-image-registry.svc:5000: received unexpected HTTP status: 500 Internal Server Error
+
+## Resolution
+: assign NFS folder permission for persistant volume as local registy .
