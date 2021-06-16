@@ -11,7 +11,7 @@ sudo yum -y install yum-utils createrepo docker git vsftpd
 
 yum -y install httpd
 ```
-- Download repogitory (Duration time : It will probably take about 6 hours.)
+- Download repogitory (Duration time : It will probably take about 5 hours.)
 ```
 for repo in rhel-7-server-rpms rhel-7-server-extras-rpms rhel-7-server-ansible-2.9-rpms rhel-7-server-ose-4.6-rpms
 do
