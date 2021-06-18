@@ -108,7 +108,7 @@ do
 done
 ```
 
-### created /etc/yum.repos.d/redhat.repo
+### remake /etc/yum.repos.d/redhat.repo
 ```
 cat /etc/yum.repos.d/ocp3-11.repo
 [rhel-7-server-rpms]
