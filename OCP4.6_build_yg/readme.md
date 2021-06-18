@@ -28,7 +28,7 @@ api-int         IN      A       192.0.0.1
 api.yo4         IN      A       192.0.0.21
 api-int.yo4     IN      A       192.0.0.21
 apps.yo4        IN      A       192.0.0.21
-bastion.yo4     IN      A       192.0.0.18
+bastion.yo4     IN      A       192.0.0.19
 bootstrap.yo4   IN      A       192.0.0.19
 repository.yo4  IN      A       192.0.0.20
 master01.yo4    IN      A       192.0.0.21
