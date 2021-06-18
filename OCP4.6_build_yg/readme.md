@@ -108,5 +108,28 @@ do
 done
 ```
 
-
+### created /etc/yum.repos.d/redhat.repo
+```
+cat /etc/yum.repos.d/ocp3-11.repo
+[rhel-7-server-rpms]
+name=rhel-7-server-rpms
+baseurl=ftp://192.0.0.20/pub/repos/rhel-7-server-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-extras-rpms]
+name=rhel-7-server-extras-rpms
+baseurl=ftp://192.0.0.20/pub/repos/rhel-7-server-extras-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ansible-2.9-rpms]
+name=rhel-7-server-ansible-2.9-rpms
+baseurl=ftp://192.0.0.20/pub/repos/rhel-7-server-ansible-2.9-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ose-3.11-rpms]
+name=rhel-7-server-ose-3.11-rpms
+baseurl=ftp://192.0.0.20/pub/repos/rhel-7-server-ose-3.11-rpms
+enabled=1
+gpgcheck=0
+```
 
