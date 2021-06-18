@@ -33,11 +33,17 @@ Jun 17 17:13:29 repository.yo4.ocp3.fu.igotit.co.kr systemd[1]: vsftpd.service f
 
 ### ssh error (w.bastion)
 ```
+#ssh root@192.168.3.19
+
 Permissions 0644 for '/home/yghong/.ssh/id_rsa' are too open.
 It is required that your private key fxxiles are NOT accessible by others.
 This private key will be ignored.
 Load key "/home/yghong/.ssh/id_rsa": bad permissions
 Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+
+soution
+check IP number
+bastion IP : 192.168.3.18
 
 ```
 
