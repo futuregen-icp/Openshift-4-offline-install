@@ -133,4 +133,61 @@ enabled=1
 gpgcheck=0
 ```
 
+###  haproxy config
+```
+ 6443, 22623, 443, 80
+
+backend yo4_ocp3_api 
+    balance source 
+    mode tcp 
+    server bootstrap 192.0.0.19:6443 check 
+    server master01 192.0.0.21:6443 check 
+    server master02 192.0.0.22:6443 check 
+    server master03 192.0.0.23:6443 check 
+    
+backend yo4_ocp3_mc
+    #balance leastconn
+    balance source
+    mode tcp
+    server bootstrap 192.0.0.19:22623 check 
+    server master01 192.0.0.21:22623 check 
+    server master02 192.0.0.22:22623 check 
+    server master03 192.0.0.23:22623 check 
+
+acl yo4_ocp3_https req_ssl_sni -m end -i yo4.ocp3.fu.igotit.co.kr
+use_backend yo4_ocp3_https if yo4_ocp3_https
+
+backend yo4_ocp3_https
+    balance leastconn
+    # balance source
+    mode tcp
+    #option tcplog
+    server worker01 192.0.0.121:443 check
+    server worker02 192.0.0.122:443 check
+
+acl yo4_ocp3_http hdr_end(host) -i yo4.ocp3.fu.igotit.co.kr
+    use_backend yo4_ocp3_http if yo4_ocp3_http
+
+backend yo4_ocp3_http
+    balance leastconn
+    # balance source
+    # mode tcp
+    # option tcplog
+    server worker01 192.0.0.121:80 check
+    server worker02 192.0.0.122:80 check
+    ```
+
+### registry mirrorring
+```
+podman run -d --name mirror-registry -p 5000:5000 --restart=always \
+   -v /opt/registry/data:/var/lib/registry \
+   -v /opt/registry/auth:/auth \
+   -e "REGISTRY_AUTH=htpasswd" \
+   -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+   -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+   -v /opt/registry/certs:/certs \
+   -e REGISTRY_HTTP_TLS_CERTIFICATE=/opt/registry/certs/registry.yo4.ocp3.fu.igotit.co.kr.crt \
+   -e REGISTRY_HTTP_TLS_KEY=/opt/registry/certs/registry.yo4.ocp3.fu.igotit.co.kr.key \
+   docker.io/library/registry:2
+```
 
