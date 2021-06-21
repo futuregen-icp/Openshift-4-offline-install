@@ -135,7 +135,7 @@ gpgcheck=0
 
 ###  haproxy config
 ```
- 6443, 22623, 443, 80
+target port: 6443, 22623, 443, 80
 
 backend yo4_ocp3_api 
     balance source 
