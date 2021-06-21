@@ -190,5 +190,10 @@ podman run -d --name mirror-registry -p 5000:5000 --restart=always \
    -e REGISTRY_HTTP_TLS_CERTIFICATE=/opt/registry/certs/registry.yo4.ocp3.fu.igotit.co.kr.crt \
    -e REGISTRY_HTTP_TLS_KEY=/opt/registry/certs/registry.yo4.ocp3.fu.igotit.co.kr.key \
    docker.io/library/registry:2
+   
 ```   
-
+### registry mirrorring 참고 내용
+```
+https://chhanz.github.io/container/2020/03/02/podman
+위 링크의 내용을 참고하여 podman의 이해와 작업을 진행 하여 습니다.
+```
