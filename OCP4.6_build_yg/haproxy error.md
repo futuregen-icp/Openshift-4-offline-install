@@ -19,7 +19,7 @@ Message from syslogd@localhost at Jun 21 13:57:41 ...
 
 Message from syslogd@localhost at Jun 21 13:57:41 ...
  haproxy[6293]: backend nas-https has no server available!
-^C
+
 [root@fu yghong]#
 
 ```
