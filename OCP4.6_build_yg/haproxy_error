@@ -21,6 +21,8 @@ Message from syslogd@localhost at Jun 21 13:57:41 ...
 ^C
 [root@fu yghong]#
 ```
+
+
 ### check 
 ```
 - 3자와 동시간때 작업이 진행되면서 충돌 의심 
