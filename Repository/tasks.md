@@ -52,3 +52,83 @@ wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.6/4.6.8/
 ```
 yum install -y vim jq httpd-tools podman skopeo
 ```
+
+- Configure mirror registry 
+```
+yum install -y vim jq httpd-tools podman skopeo
+
+mkdir -p /opt/registry/data 
+mkdir -p /opt/registry/auth 
+mkdir -p /opt/registry/certs
+
+cd /opt/registry/certs
+openssl req -newkey rsa:4096 -nodes -sha256 -keyout mirrorregistry.lab2.dslee.lab.key -x509 -days 3650 -out mirrorregistry.lab2.dslee.lab.crt
+cp /opt/registry/certs/mirrorregistry.lab2.dslee.lab.crt /etc/pki/ca-trust/source/anchors/
+update-ca-trust
+
+htpasswd -bBc /opt/registry/auth/htpasswd admin admin 
+vi /etc/containers/registries.conf 
+[registries.search]
+registries = ['mirrorregistry.lab2.dslee.lab:5000', 'registry.access.redhat.com', 'registry.redhat.io']
+
+podman run -d --name mirror-registry -p 5000:5000 --restart=always \
+   -v /opt/registry/data:/var/lib/registry \
+   -v /opt/registry/auth:/auth \
+   -e "REGISTRY_AUTH=htpasswd" \
+   -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+   -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+   -v /opt/registry/certs:/certs \
+   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/mirrorregistry.lab2.dslee.lab.crt \
+   -e REGISTRY_HTTP_TLS_KEY=/certs/mirrorregistry.lab2.dslee.lab.key \
+   docker.io/library/registry:2
+
+cat pull-secret.text | jq . > pull-secret.json
+
+echo -n 'admin:admin' | base64 -w0
+YWRtaW46YWRtaW4=
+
+    "mirrorregistry.lab2.dslee.lab": { 
+      "auth": "YWRtaW46YWRtaW4=", 
+      "email": "you@example.com"
+  },
+
+## vsersion check mirror registry
+[root@l2-10-base1 registry]# openshift-install version
+openshift-install 4.6.35
+built from commit 68ab13d26311a3e03854a00fd7cf5b1583ae9b69
+release image quay.io/openshift-release-dev/ocp-release@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
+
+## settting environments
+OCP_RELEASE=4.6.35
+LOCAL_REGISTRY='mirrorregistry.lab2.dslee.lab:5000'
+LOCAL_REPOSITORY='ocp4/openshift4'
+PRODUCT_REPO='openshift-release-dev'
+LOCAL_SECRET_JSON='/opt/registry/pull-secret.json'
+RELEASE_NAME='ocp-release'
+ARCHITECTURE='x86_64'
+REMOVABLE_MEDIA_PATH='/data'
+
+## validation check mirror registry
+oc adm release mirror -a ${LOCAL_SECRET_JSON}  \
+     --from=quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE} \
+     --to=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} \
+     --to-release-image=${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}-${ARCHITECTURE} --dry-run
+
+## download mirror images to local path
+oc adm release mirror -a ${LOCAL_SECRET_JSON} --to-dir=${REMOVABLE_MEDIA_PATH}/mirror quay.io/${PRODUCT_REPO}/${RELEASE_NAME}:${OCP_RELEASE}-${ARCHITECTURE}
+
+## disalbe selinux
+sestatus
+setenforce 0
+
+## Take the media to the restricted network environment and upload the images to the local container registry.
+GODEBUG=x509ignoreCN=0  oc image mirror -a ${LOCAL_SECRET_JSON} --from-dir=${REMOVABLE_MEDIA_PATH}/mirror "file://openshift/release:${OCP_RELEASE}*" ${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} --registry-config=/opt/registry/pull-secret.json
+GODEBUG=x509ignoreCN=0 oc adm release extract -a ${LOCAL_SECRET_JSON} --command=openshift-install "${LOCAL_REGISTRY}/${LOCAL_REPOSITORY}:${OCP_RELEASE}" --image
+
+
+
+GODEBUG=x509ignoreCN=0 podman login mirrorregistry.lab2.dslee.lab:5000
+
+## Definitions
+mirrorregistry.lab2.dslee.lab
+```
