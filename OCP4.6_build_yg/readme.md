@@ -175,7 +175,8 @@ backend yo4_ocp3_http
     # option tcplog
     server worker01 192.0.0.121:80 check
     server worker02 192.0.0.122:80 check
-    ```
+
+```
 
 ### registry mirrorring
 ```
@@ -189,5 +190,5 @@ podman run -d --name mirror-registry -p 5000:5000 --restart=always \
    -e REGISTRY_HTTP_TLS_CERTIFICATE=/opt/registry/certs/registry.yo4.ocp3.fu.igotit.co.kr.crt \
    -e REGISTRY_HTTP_TLS_KEY=/opt/registry/certs/registry.yo4.ocp3.fu.igotit.co.kr.key \
    docker.io/library/registry:2
-   
+```   
 
