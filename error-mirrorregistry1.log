@@ -121,3 +121,7 @@ error: unable to push file://openshift/release: failed to upload blob sha256:029
 error: unable to push file://openshift/release: failed to upload blob sha256:9416fbd857690f34230bb202627c0163414843d330812887b2f9fa056793b081: Post "https://mirrorregistry.lab2.dslee.lab:5000/v2/ocp4/openshift4/blobs/uploads/": no basic auth credentials
 info: Mirroring completed in 48.96s (0B/s)
 error: one or more errors occurred while uploading images
+
+[resolution]
+use --registry-config option
+GODEBUG=x509ignoreCN=0  oc image mirror -a ${LOCAL_SECRET_JSON} --from-dir=${REMOVABLE_MEDIA_PATH}/mirror "file://openshift/release:${OCP_RELEASE}*" ${LOCAL_REGISTRY}/${LOCAL_REPOSITORY} --registry-config=/opt/registry/pull-secret.json
