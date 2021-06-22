@@ -132,3 +132,77 @@ GODEBUG=x509ignoreCN=0 podman login mirrorregistry.lab2.dslee.lab:5000
 ## Definitions
 mirrorregistry.lab2.dslee.lab
 ```
+
+## Bootstrap
+```
+## install config
+imageContentSources:
+- mirrors:
+  - mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+
+imageContentSources:
+- mirrors:
+  - mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-release
+- mirrors:
+  - mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4
+  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+
+
+## Openshift install command
+
+manifest dir define : /opt/ocp4/install-20210622
+cd /opt/ocp4/install-20210622
+openshift-install create manifests --dir=/opt/ocp4/install-20210622
+openshift-install create ignition-configs --dir=/opt/ocp4/install-20210622
+
+manifest dir define : /opt/ocp4/install-20210622-1
+cd /opt/ocp4/install-20210622-1
+openshift-install create manifests --dir=/opt/ocp4/install-20210622-1
+openshift-install create ignition-configs --dir=/opt/ocp4/install-20210622-1
+
+manifest dir define : /opt/ocp4/install-20210622-2
+cd /opt/ocp4/install-20210622-2
+openshift-install create manifests --dir=/opt/ocp4/install-20210622-2
+openshift-install create ignition-configs --dir=/opt/ocp4/install-20210622-2
+
+manifest dir define : /opt/ocp4/install-20210622-3
+cd /opt/ocp4/install-20210622-3
+openshift-install create manifests --dir=/opt/ocp4/install-20210622-3
+openshift-install create ignition-configs --dir=/opt/ocp4/install-20210622-3
+
+
+## bootstrap
+
+sudo nmcli con mod "Wired Connection" ipv4.method manual  ipv4.addresses 172.10.20.30/24 ipv4.gateway 172.10.20.10 ipv4.dns 172.10.20.10
+sudo nmcli con down "Wired Connection" 
+sudo nmcli con up   "Wired Connection" 
+sudo nmcli general hostname l2-30-bootstrap.lab2.dslee.lab
+sudo coreos-installer install /dev/sda \ 
+  --ignition-url=http://172.10.20.10:8080/bootstrap.ign \ 
+  --insecure-ignition \ 
+  --append-karg "ip=172.10.20.30::172.10.20.10:255.255.255.0:l2-30-bootstrap.lab2.dslee.lab:eth0:none nameserver=172.10.20.10"
+
+## Validations
+GODEBUG=x509ignoreCN=0 podman pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
+podman login redhat.io
+
+## Issues
+[root@l2-10-base1 ~]# podman pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
+Trying to pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d...
+  Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
+Error: Error initializing source docker://mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
+
+
+[root@l2-10-base1 ~]# podman login mirrorregistry.lab2.dslee.lab:5000
+Authenticating with existing credentials...
+Existing credentials are invalid, please enter valid username and password
+Username (admin): admin
+Password: 
+Error: error authenticating creds for "mirrorregistry.lab2.dslee.lab:5000": error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
+[root@l2-10-base1 ~]# 
+```
