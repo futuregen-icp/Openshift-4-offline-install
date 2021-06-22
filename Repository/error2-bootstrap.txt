@@ -1,0 +1,32 @@
+Jun 22 05:03:19 l2-30-bootstrap.lab2.dslee.lab systemd[1]: Couldn't stat device /dev/char/10:200: No such file or directory
+Jun 22 05:03:19 l2-30-bootstrap.lab2.dslee.lab systemd[1]: Started libcontainer container a515e19daf4a4aa0fbe521b775b8fa78814f610ab0d4359863daa5e54e901c58.
+-- Subject: Unit libpod-a515e19daf4a4aa0fbe521b775b8fa78814f610ab0d4359863daa5e54e901c58.scope has finished start-up
+-- Defined-By: systemd
+-- Support: https://access.redhat.com/support
+-- 
+-- Unit libpod-a515e19daf4a4aa0fbe521b775b8fa78814f610ab0d4359863daa5e54e901c58.scope has finished starting up.
+-- 
+-- The start-up result is done.
+Jun 22 05:03:19 l2-30-bootstrap.lab2.dslee.lab systemd[1]: Couldn't stat device /dev/char/10:200: No such file or directory
+Jun 22 05:03:20 l2-30-bootstrap.lab2.dslee.lab systemd[1]: libpod-a515e19daf4a4aa0fbe521b775b8fa78814f610ab0d4359863daa5e54e901c58.scope: Consumed 147ms CPU time
+-- Subject: Resources consumed by unit runtime
+-- Defined-By: systemd
+-- Support: https://access.redhat.com/support
+-- 
+-- The unit libpod-a515e19daf4a4aa0fbe521b775b8fa78814f610ab0d4359863daa5e54e901c58.scope completed and consumed the indicated resources.
+Jun 22 05:03:20 l2-30-bootstrap.lab2.dslee.lab systemd[1]: Couldn't stat device /dev/char/10:200: No such file or directory
+Jun 22 05:03:20 l2-30-bootstrap.lab2.dslee.lab systemd[1]: Started libcontainer container 32201f3e7c60a57b1b146ccd7844c7ff9dfcf0723a7e1629f1f11015dd32ff76.
+-- Subject: Unit libpod-32201f3e7c60a57b1b146ccd7844c7ff9dfcf0723a7e1629f1f11015dd32ff76.scope has finished start-up
+-- Defined-By: systemd
+-- Support: https://access.redhat.com/support
+-- 
+-- Unit libpod-32201f3e7c60a57b1b146ccd7844c7ff9dfcf0723a7e1629f1f11015dd32ff76.scope has finished starting up.
+-- 
+-- The start-up result is done.
+Jun 22 05:03:20 l2-30-bootstrap.lab2.dslee.lab systemd[1]: Couldn't stat device /dev/char/10:200: No such file or directory
+Jun 22 05:03:20 l2-30-bootstrap.lab2.dslee.lab systemd[1]: libpod-32201f3e7c60a57b1b146ccd7844c7ff9dfcf0723a7e1629f1f11015dd32ff76.scope: Consumed 159ms CPU time
+-- Subject: Resources consumed by unit runtime
+-- Defined-By: systemd
+-- Support: https://access.redhat.com/support
+-- 
+-- The unit libpod-32201f3e7c60a57b1b146ccd7844c7ff9dfcf0723a7e1629f1f11015dd32ff76.scope completed and consumed the indicated resources.
