@@ -30,3 +30,6 @@ Jun 22 05:03:20 l2-30-bootstrap.lab2.dslee.lab systemd[1]: libpod-32201f3e7c60a5
 -- Support: https://access.redhat.com/support
 -- 
 -- The unit libpod-32201f3e7c60a57b1b146ccd7844c7ff9dfcf0723a7e1629f1f11015dd32ff76.scope completed and consumed the indicated resources.
+
+## Resolution
+Using extract openshift install tool
