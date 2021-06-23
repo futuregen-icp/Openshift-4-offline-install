@@ -350,3 +350,22 @@ spec:
 oc create -f catalogsource.yml
 oc get catalogsources.operators.coreos.com -n openshift-marketplace
 ```
+- Tech sprint status
+```
+오픈시프트설치 - Done
+코어os의 노드추가 - Done
+rhel7의 노드 추가 - To do
+클러스터 오퍼레이터 인증 이슈 해결 - Done
+기본 카탈로그소스 비활성화 - Done
+카탈로그소스 정의  - To do
+NFS 설정 이미지레지스트 설정 - To do
+스토리지 클래스 설정 - To do
+사용자 관리 - To do
+  - Htpasswd 
+  - Active Directory - long term plan
+인프라노드의 선택 - To do
+모니터링 환경 구성 - To do
+로깅 환경 구성 - To do
+4.6.15 to 4.6.35 오프라인 버전 업그레이드  - To do
+hostpath 구성 하고, pv 생성하고, pvc 생성하고, vm에 마운트 > 여러 파드에서 사용할 때에의 디렉토리 구조 확인 - To do
+```
