@@ -1,3 +1,5 @@
+## Issue
+
 Jun 22 06:58:18 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: Pull failed. Retrying mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d...
 Jun 22 06:58:18 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: Error: error pulling image "mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d": unable to pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: unable to pull image: Error initializing source docker://mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate signed by unknown authority
 Jun 22 06:58:18 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: Pull failed. Retrying mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d...
@@ -10,3 +12,25 @@ Jun 22 06:58:18 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: 
 Jun 22 06:58:18 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: Error: error pulling image "mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d": unable to pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: unable to pull image: Error initializing source docker://mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate signed by unknown authority
 Jun 22 06:58:18 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: Pull failed. Retrying mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d...
 Jun 22 06:58:19 l2-30-bootstrap.lab2.dslee.lab release-image-download.sh[1663]: Error: error pulling image "mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d": unable to pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: unable to pull image: Error initializing source docker://mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate signed by unknown authority
+
+
+## Validations 
+GODEBUG=x509ignoreCN=0 podman pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
+podman login redhat.io
+
+[root@l2-10-base1 ~]# podman pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
+Trying to pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d...
+  Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
+Error: Error initializing source docker://mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
+
+
+[root@l2-10-base1 ~]# podman login mirrorregistry.lab2.dslee.lab:5000
+Authenticating with existing credentials...
+Existing credentials are invalid, please enter valid username and password
+Username (admin): admin
+Password: 
+Error: error authenticating creds for "mirrorregistry.lab2.dslee.lab:5000": error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
+
+## Resolution
+Add 'additionalTrustBundle:' for registry certificate in install-config.yaml file.
+
