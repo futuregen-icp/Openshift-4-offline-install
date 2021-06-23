@@ -181,7 +181,6 @@ openshift-install create manifests --dir=/opt/ocp4/install-20210623
 openshift-install create ignition-configs --dir=/opt/ocp4/install-20210623
 
 openshift-install --dir=/opt/ocp4/install-20210623 wait-for bootstrap-complete --log-level=info
-openshift-install --dir=/opt/ocp4/install-20210623 wait-for install-complete --log-level debug
 
 ## bootstrap
 
