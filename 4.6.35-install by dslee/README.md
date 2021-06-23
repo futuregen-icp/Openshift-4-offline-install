@@ -1,4 +1,4 @@
-## Definisions
+## Definitions
 
 - Openshift verision : 4.6.35
 - Servers
