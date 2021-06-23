@@ -194,3 +194,68 @@ sudo coreos-installer install /dev/sda \
   --append-karg "ip=172.10.20.30::172.10.20.10:255.255.255.0:l2-30-bootstrap.lab2.dslee.lab:eth0:none nameserver=172.10.20.10"
 
 ```
+
+- Bootstrap complates
+```
+## Check bootstraper 
+[root@l2-10-base1 .kube]# openshift-install --dir=/opt/ocp4/install-20210623 wait-for install-complete --log-level debug
+DEBUG OpenShift Installer 4.6.35                   
+DEBUG Built from commit 68ab13d26311a3e03854a00fd7cf5b1583ae9b69 
+DEBUG Loading Install Config...                    
+DEBUG   Loading SSH Key...                         
+DEBUG   Loading Base Domain...                     
+DEBUG     Loading Platform...                      
+DEBUG   Loading Cluster Name...                    
+DEBUG     Loading Base Domain...                   
+DEBUG     Loading Platform...                      
+DEBUG   Loading Pull Secret...                     
+DEBUG   Loading Platform...                        
+DEBUG Using Install Config loaded from state file  
+INFO Waiting up to 40m0s for the cluster at https://api.lab2.dslee.lab:6443 to initialize... 
+DEBUG Cluster is initialized                       
+INFO Waiting up to 10m0s for the openshift-console route to be created... 
+DEBUG Route found in openshift-console namespace: console 
+DEBUG Route found in openshift-console namespace: downloads 
+DEBUG OpenShift console route is created           
+INFO Install complete!                            
+INFO To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/opt/ocp4/install-20210623/auth/kubeconfig' 
+INFO Access the OpenShift web-console here: https://console-openshift-console.apps.lab2.dslee.lab 
+INFO Login to the console with user: "kubeadmin", and password: "6W7fF-dLv2i-TaxdM-fwjR6" 
+INFO Time elapsed: 0s   
+
+## Check cluster operator
+[root@l2-10-base1 .kube]# oc get co
+NAME                                       VERSION   AVAILABLE   PROGRESSING   DEGRADED   SINCE
+authentication                             4.6.35    True        False         False      87m
+cloud-credential                           4.6.35    True        False         False      5h21m
+cluster-autoscaler                         4.6.35    True        False         False      5h6m
+config-operator                            4.6.35    True        False         False      5h7m
+console                                    4.6.35    True        False         False      87m
+csi-snapshot-controller                    4.6.35    True        False         False      5h7m
+dns                                        4.6.35    True        False         False      5h6m
+etcd                                       4.6.35    True        False         False      4h54m
+image-registry                             4.6.35    True        False         False      4h48m
+ingress                                    4.6.35    True        False         False      3h56m
+insights                                   4.6.35    True        False         False      5h7m
+kube-apiserver                             4.6.35    True        False         False      4h53m
+kube-controller-manager                    4.6.35    True        False         False      5h4m
+kube-scheduler                             4.6.35    True        False         False      5h5m
+kube-storage-version-migrator              4.6.35    True        False         False      3h56m
+machine-api                                4.6.35    True        False         False      5h7m
+machine-approver                           4.6.35    True        False         False      5h6m
+machine-config                             4.6.35    True        False         False      5h6m
+marketplace                                4.6.35    True        False         False      5h6m
+monitoring                                 4.6.35    True        False         False      3h55m
+network                                    4.6.35    True        False         False      5h7m
+node-tuning                                4.6.35    True        False         False      5h7m
+openshift-apiserver                        4.6.35    True        False         False      4h48m
+openshift-controller-manager               4.6.35    True        False         False      5h6m
+openshift-samples                          4.6.35    True        False         False      4h47m
+operator-lifecycle-manager                 4.6.35    True        False         False      5h7m
+operator-lifecycle-manager-catalog         4.6.35    True        False         False      5h7m
+operator-lifecycle-manager-packageserver   4.6.35    True        False         False      4h48m
+service-ca                                 4.6.35    True        False         False      5h7m
+storage                                    4.6.35    True        False         False      5h7m
+****
+```
+
