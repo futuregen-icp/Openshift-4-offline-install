@@ -1,8 +1,23 @@
+## Definitions
+
+- Openshift verision : 4.6.35
 - Servers
 ```
 l2-10-base1.lab2.dslee.lab 172.10.20.10 (200G, dns,haproxy)
 l2-11-nfs1.lab2.dslee.lab 172.10.20.11 (400G, registry/nfs/repos)
+l2-31-master1.lab2.dslee.lab 172.10.20.31
+l2-32-master2.lab2.dslee.lab 172.10.20.32
+l2-33-master3.lab2.dslee.lab 172.10.20.33
+l2-41-infra1.lab2.dslee.lab 172.10.20.41
+l2-42-infra2.lab2.dslee.lab 172.10.20.42
 ```
+
+## Configure Repository
+- Repository path
+```
+repos download_path=/var/ftp/pub/repos
+```
+
 
 -  Configure subscriptions
 ```
@@ -33,13 +48,7 @@ systemctl enable vsftpd
 systemctl start vsftpd
 ```
 
-- Definitions
-```
-repos download_path=/var/ftp/pub/repos
-openshift version : 4.6.35
-role : registry
-```
-
+## Openshift installation
 - Download fils
 ```
 wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.35/openshift-install-linux.tar.gz
