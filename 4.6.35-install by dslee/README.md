@@ -48,7 +48,7 @@ systemctl enable vsftpd
 systemctl start vsftpd
 ```
 
-## Openshift install 
+## Openshift installation
 - Download fils
 ```
 wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/4.6.35/openshift-install-linux.tar.gz
