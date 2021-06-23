@@ -259,3 +259,94 @@ storage                                    4.6.35    True        False         F
 ****
 ```
 
+- Operator hub configuration
+```
+## Operator hub
+oc get operatorhubs.config.openshift.io cluster -o yaml
+
+oc patch operatorhubs.config.openshift.io cluster --type json -p '[{"op": "add", "path":
+"/spec/disableAllDefaultSources", "value": true}]'
+
+[root@l2-10-base1 .kube]# oc get operatorhubs.config.openshift.io cluster -o yaml
+apiVersion: config.openshift.io/v1
+kind: OperatorHub
+metadata:
+  annotations:
+    release.openshift.io/create-only: "true"
+  creationTimestamp: "2021-06-23T00:16:12Z"
+  generation: 2
+  managedFields:
+  - apiVersion: config.openshift.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:release.openshift.io/create-only: {}
+      f:spec: {}
+    manager: cluster-version-operator
+    operation: Update
+    time: "2021-06-23T00:16:12Z"
+  - apiVersion: config.openshift.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:spec:
+        f:disableAllDefaultSources: {}
+    manager: kubectl-patch
+    operation: Update
+    time: "2021-06-23T04:40:47Z"
+  - apiVersion: config.openshift.io/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        .: {}
+        f:sources: {}
+    manager: marketplace-operator
+    operation: Update
+    time: "2021-06-23T04:40:47Z"
+  name: cluster
+  resourceVersion: "96520"
+  selfLink: /apis/config.openshift.io/v1/operatorhubs/cluster
+  uid: 1203860d-8949-452e-a81a-1f3fea9768ff
+spec:
+  disableAllDefaultSources: true
+status:
+  sources:
+  - disabled: true
+    message: CatalogSource.operators.coreos.com "redhat-operators" not found
+    name: redhat-operators
+    status: Error
+  - disabled: true
+    message: CatalogSource.operators.coreos.com "certified-operators" not found
+    name: certified-operators
+    status: Error
+  - disabled: true
+    message: CatalogSource.operators.coreos.com "community-operators" not found
+    name: community-operators
+    status: Error
+  - disabled: true
+    message: CatalogSource.operators.coreos.com "redhat-marketplace" not found
+    name: redhat-marketplace
+    status: Error
+
+## Operatorhub example
+
+cat catalogsource.yml
+
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: my-operator-catalog
+  namespace: openshift-marketplace
+spec:
+  sourceType: grpc
+  image: bastion.ocp-dc.redfaceh.com:5000/mirror-olm/redhat-operator-index:v4.6
+  displayName: My Operator Catalog
+  publisher: RedFace
+  updateStrategy:
+    registryPoll:
+      interval: 30m
+
+oc create -f catalogsource.yml
+oc get catalogsources.operators.coreos.com -n openshift-marketplace
+```
