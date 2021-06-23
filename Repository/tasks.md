@@ -133,7 +133,7 @@ GODEBUG=x509ignoreCN=0 podman login mirrorregistry.lab2.dslee.lab:5000
 mirrorregistry.lab2.dslee.lab
 ```
 
-## Bootstrap
+- Bootstrap
 ```
 ## install config
 imageContentSources:
@@ -192,6 +192,5 @@ sudo coreos-installer install /dev/sda \
   --ignition-url=http://172.10.20.10:8080/bootstrap.ign \ 
   --insecure-ignition \ 
   --append-karg "ip=172.10.20.30::172.10.20.10:255.255.255.0:l2-30-bootstrap.lab2.dslee.lab:eth0:none nameserver=172.10.20.10"
-
 
 ```
