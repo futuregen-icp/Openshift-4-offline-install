@@ -194,22 +194,5 @@ sudo coreos-installer install /dev/sda \
   --insecure-ignition \ 
   --append-karg "ip=172.10.20.30::172.10.20.10:255.255.255.0:l2-30-bootstrap.lab2.dslee.lab:eth0:none nameserver=172.10.20.10"
 
-## Validations
-GODEBUG=x509ignoreCN=0 podman pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
-podman login redhat.io
 
-## Issues
-[root@l2-10-base1 ~]# podman pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d
-Trying to pull mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d...
-  Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
-Error: Error initializing source docker://mirrorregistry.lab2.dslee.lab:5000/ocp4/openshift4@sha256:8a57df33243359a71e6a4aa835b0423ff280d59ecc332816ba2143842adcb28d: error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
-
-
-[root@l2-10-base1 ~]# podman login mirrorregistry.lab2.dslee.lab:5000
-Authenticating with existing credentials...
-Existing credentials are invalid, please enter valid username and password
-Username (admin): admin
-Password: 
-Error: error authenticating creds for "mirrorregistry.lab2.dslee.lab:5000": error pinging docker registry mirrorregistry.lab2.dslee.lab:5000: Get "https://mirrorregistry.lab2.dslee.lab:5000/v2/": x509: certificate relies on legacy Common Name field, use SANs or temporarily enable Common Name matching with GODEBUG=x509ignoreCN=0
-[root@l2-10-base1 ~]# 
 ```
