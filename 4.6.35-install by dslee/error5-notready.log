@@ -1,0 +1,25 @@
+## Issue 
+[root@l2-10-base1 ~]# oc get nodes
+NAME                           STATUS     ROLES    AGE   VERSION
+l2-31-master1.lab2.dslee.lab   NotReady   master   25h   v1.19.0+b00ba52
+l2-32-master2.lab2.dslee.lab   NotReady   master   25h   v1.19.0+b00ba52
+l2-33-master3.lab2.dslee.lab   NotReady   master   24h   v1.19.0+b00ba52
+l2-41-infra1.lab2.dslee.lab    NotReady   worker   23h   v1.19.0+b00ba52
+l2-42-infra2.lab2.dslee.lab    NotReady   worker   23h   v1.19.0+b00ba52
+[root@l2-10-base1 ~]# 
+
+Conditions:
+  Type             Status    LastHeartbeatTime                 LastTransitionTime                Reason              Message
+  ----             ------    -----------------                 ------------------                ------              -------
+  MemoryPressure   Unknown   Wed, 23 Jun 2021 18:00:09 +0900   Thu, 24 Jun 2021 09:21:45 +0900   NodeStatusUnknown   Kubelet stopped posting node status.
+  DiskPressure     Unknown   Wed, 23 Jun 2021 18:00:09 +0900   Thu, 24 Jun 2021 09:21:45 +0900   NodeStatusUnknown   Kubelet stopped posting node status.
+  PIDPressure      Unknown   Wed, 23 Jun 2021 18:00:09 +0900   Thu, 24 Jun 2021 09:21:45 +0900   NodeStatusUnknown   Kubelet stopped posting node status.
+  Ready            Unknown   Wed, 23 Jun 2021 18:00:09 +0900   Thu, 24 Jun 2021 09:21:45 +0900   NodeStatusUnknown   Kubelet stopped posting node status.
+Addresses:
+
+ API server: nodes is forbidden: User "system:anonymous" cannot create resource "nodes" in API group "" at the cluster scope
+
+Jun 24 01:43:25 l2-31-master1.lab2.dslee.lab hyperkube[1922]: I0624 01:43:25.548421    1922 csi_plugin.go:994] Failed to contact API server when waiting for CSINode publishing: csinodes.storage.k8s.io "l2-31-master1.lab2.dslee.lab" is forbidden: User "system:anonymous" cannot get resource "csinodes" in API group "storage.k8s.io" at the cluster scope
+
+## Resolution
+oc get csr -o name | xargs oc adm certificate approve
