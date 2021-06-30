@@ -101,6 +101,7 @@ openshift_kubeconfig_path="~/.kube/config"
 [new_workers]
 l2-51-router1.lab2.dslee.lab
 l2-52-router2.lab2.dslee.lab
+l2-61-log1.lab2.dslee.lab
 ```
 
 ## Run ansible playbook
