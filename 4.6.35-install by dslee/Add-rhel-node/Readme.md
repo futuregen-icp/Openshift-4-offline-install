@@ -78,6 +78,8 @@ baseurl=http://172.10.20.11/repos/rhel-7-server-optional-rpms
 ebabled=1
 gpgcheck=0
 
+## Check selinux
+sestatus
 
 ## Disable selinux
 setenforce 0
